@@ -1,0 +1,17 @@
+[project]
+name = "clinical-evidence-agent"
+version = "0.1.0"
+description = "Biomedical evidence retrieval system for studying deterministic and agentic LLM workflows"
+readme = "README.md"
+authors = [
+    { name = "lsabetta", email = "l.sabetta.g@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+clinical-evidence-agent = "clinical_evidence_agent.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.12.15,<0.13.0"]
+build-backend = "uv_build"
