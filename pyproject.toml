@@ -7,7 +7,9 @@ authors = [
     { name = "lsabetta", email = "l.sabetta.g@gmail.com" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "pydantic>=2.13.5",
+]
 
 [project.scripts]
 clinical-evidence-agent = "clinical_evidence_agent.cli:main"
@@ -15,3 +17,9 @@ clinical-evidence-agent = "clinical_evidence_agent.cli:main"
 [build-system]
 requires = ["uv_build>=0.12.15,<0.13.0"]
 build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.16.7",
+]
