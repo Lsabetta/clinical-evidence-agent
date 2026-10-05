@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 
 from pydantic import ValidationError
 
-from clinical_evidence_agent.llm import MODEL
+from clinical_evidence_agent.llm import MODEL, NUM_CTX
 from clinical_evidence_agent.run_records import (
     V0ARunRecord,
     save_v0a_run,
@@ -68,6 +68,7 @@ def main() -> None:
             answer=None,
             error_type=type(exc).__name__,
             error_message=str(exc),
+            requested_num_ctx=NUM_CTX,
         )
         save_v0a_run(record)
         raise
@@ -85,6 +86,7 @@ def main() -> None:
             answer=None,
             error_type=type(exc).__name__,
             error_message=str(exc),
+            requested_num_ctx=NUM_CTX,
         )
         save_v0a_run(record)
         raise
@@ -99,6 +101,7 @@ def main() -> None:
         output_tokens=result.output_tokens,
         schema_valid=True,
         answer=result.output,
+        requested_num_ctx=NUM_CTX,
     )
 
     save_v0a_run(record)

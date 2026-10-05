@@ -12,6 +12,7 @@ from clinical_evidence_agent.v0b import (
     V0BRunError,
     V0B_SYNTHESIS_PROMPT_VERSION,
 )
+from clinical_evidence_agent.llm import NUM_CTX
 
 
 class V0ARunRecord(BaseModel):
@@ -26,6 +27,7 @@ class V0ARunRecord(BaseModel):
     answer: EvidenceAnswer | None
     error_type: str | None = None
     error_message: str | None = None
+    requested_num_ctx: int | None = None
 
 def save_v0a_run(
     record: V0ARunRecord,
@@ -59,6 +61,7 @@ def save_v0b_run(
             "latency_s": query_call.latency_s,
             "input_tokens": query_call.input_tokens,
             "output_tokens": query_call.output_tokens,
+            "requested_num_ctx": NUM_CTX,
         },
         "retrieval": {
             "sort": "relevance",
@@ -79,6 +82,7 @@ def save_v0b_run(
             "input_tokens": synthesis_call.input_tokens,
             "output_tokens": synthesis_call.output_tokens,
             "draft": synthesis_call.output.model_dump(mode="json"),
+            "requested_num_ctx": NUM_CTX,
         },
         "validation": {
             "schema_valid": True,
@@ -118,6 +122,7 @@ def save_v0b_failure(
             "latency_s": query_call.latency_s if query_call else None,
             "input_tokens": query_call.input_tokens if query_call else None,
             "output_tokens": query_call.output_tokens if query_call else None,
+            "requested_num_ctx": NUM_CTX,
         },
         "retrieval": {
             "sort": "relevance",
@@ -152,6 +157,7 @@ def save_v0b_failure(
                 synthesis_call.output.model_dump(mode="json")
                 if synthesis_call else None
             ),
+            "requested_num_ctx": NUM_CTX,
         },
         "validation": {
             "schema_valid": True if synthesis_call else None,

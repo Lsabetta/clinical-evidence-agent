@@ -7,8 +7,9 @@ from clinical_evidence_agent.v0b import (
 )
 from unittest.mock import Mock
 
+
 from clinical_evidence_agent import v0b
-from clinical_evidence_agent.llm import LLMResult
+from clinical_evidence_agent.llm import LLMResult, NUM_CTX
 from clinical_evidence_agent.query_generation import PubMedQuery
 import json
 
@@ -141,6 +142,8 @@ def test_run_v0b_connects_pipeline(monkeypatch, tmp_path):
         synthesis_result.output.model_dump(mode="json")
     )
     assert saved["answer"] == result.answer.model_dump(mode="json")
+    assert saved["query_generation"]["requested_num_ctx"] == NUM_CTX
+    assert saved["synthesis"]["requested_num_ctx"] == NUM_CTX
 
 @pytest.mark.parametrize(
     "citation",

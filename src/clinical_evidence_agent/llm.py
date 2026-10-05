@@ -7,6 +7,7 @@ from pydantic import BaseModel
 
 
 MODEL = "qwen3:4b-instruct"
+NUM_CTX = 8192
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -30,7 +31,10 @@ def generate_structured_answer(
         model=MODEL,
         messages=[{"role": "user", "content": prompt}],
         format=schema.model_json_schema(),
-        options={"temperature": 0},
+        options={
+            "temperature": 0,
+            "num_ctx": NUM_CTX,
+        }, 
     )
 
     end = perf_counter()
