@@ -4,6 +4,6 @@ __pycache__/
 *.py[cod]
 .DS_Store
 .pytest_cache/
-.ruff_cache/
-project_documentation
+.ruff_cache/ß
 runs/
+eval/results

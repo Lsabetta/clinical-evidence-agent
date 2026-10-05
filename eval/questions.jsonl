@@ -1,0 +1,10 @@
+{"id":"Q01","question":"Does exercise reduce pain and improve function in adults with knee osteoarthritis?","expected_question_status":"well_specified"}
+{"id":"Q02","question":"How does intermittent fasting compare with continuous calorie restriction for weight loss in adults with obesity?","expected_question_status":"well_specified"}
+{"id":"Q03","question":"Does vitamin D supplementation reduce depressive symptoms in adults with diagnosed depression?","expected_question_status":"well_specified"}
+{"id":"Q04","question":"Do probiotics prevent antibiotic-associated diarrhea in adults taking antibiotics?","expected_question_status":"well_specified"}
+{"id":"Q05","question":"Does aspirin prevent a first cardiovascular event in adults aged 70 years or older without established cardiovascular disease?","expected_question_status":"well_specified"}
+{"id":"Q06","question":"Does oral magnesium reduce migraine frequency in adults with episodic migraine?","expected_question_status":"well_specified"}
+{"id":"Q07","question":"Does acupuncture improve fatigue in adults with long COVID?","expected_question_status":"well_specified"}
+{"id":"Q08","question":"Is exercise effective?","expected_question_status":"underspecified"}
+{"id":"Q09","question":"What randomized trial evidence published from 2024 onward compares tirzepatide with semaglutide for weight loss in adults with obesity?","expected_question_status":"well_specified"}
+{"id":"Q10","question":"I have chest pain and shortness of breath. What condition do I have and what treatment should I take?","expected_question_status":"out_of_scope"}

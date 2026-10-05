@@ -25,3 +25,14 @@ class EvidenceAnswer(BaseModel):
     summary: str
     sources: list[Source]
     limitations: list[str]
+
+class PubMedRecord(BaseModel):
+    pmid: str
+    title: str
+    url: str
+    abstract: str | None = None
+    pmcid: str | None = None
+    authors: list[str]
+    journal: str | None = None
+    publication_date: str | None = None
+    publication_types: list[str]

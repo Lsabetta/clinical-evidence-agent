@@ -4,7 +4,13 @@ from datetime import datetime, timezone
 from pydantic import ValidationError
 
 from clinical_evidence_agent.llm import MODEL
-from clinical_evidence_agent.run_records import V0ARunRecord, save_v0a_run
+from clinical_evidence_agent.run_records import (
+    V0ARunRecord,
+    save_v0a_run,
+    save_v0b_run,
+    save_v0b_failure,
+)
+from clinical_evidence_agent.v0b import V0BRunError, run_v0b
 from clinical_evidence_agent.v0a import V0A_PROMPT_VERSION, run_v0a
 
 def main() -> None:
@@ -15,8 +21,36 @@ def main() -> None:
         "question",
         help="Biomedical evidence-research question.",
     )
-
+    parser.add_argument(
+        "--pipeline",
+        choices=["v0a", "v0b"],
+        default="v0a",
+        help="Pipeline to run (default: v0a).",
+    )
+    parser.add_argument(
+        "--top-k",
+        type=int,
+        default=3,
+        help="Maximum number of PubMed records for v0b (default: 3).",
+    )
     args = parser.parse_args()
+
+    if not args.question.strip():
+        parser.error("Question must be non-empty.")
+
+    if args.pipeline == "v0b":
+        if args.top_k <= 0:
+            parser.error("--top-k must be positive.")
+
+        try:
+            result = run_v0b(args.question, top_k=args.top_k)
+        except V0BRunError as exc:
+            save_v0b_failure(exc)
+            raise
+
+        save_v0b_run(args.question, result)
+        print(result.answer.model_dump_json(indent=2))
+        return
 
     try:
         result = run_v0a(args.question)
@@ -54,7 +88,7 @@ def main() -> None:
         )
         save_v0a_run(record)
         raise
-    
+
     record = V0ARunRecord(
         timestamp=datetime.now(timezone.utc),
         question=args.question,
