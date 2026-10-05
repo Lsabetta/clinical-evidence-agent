@@ -126,7 +126,7 @@ def test_run_v0b_connects_pipeline(monkeypatch, tmp_path):
     assert result.top_k == 3
     assert result.answer.sources[0].pmid == "123"
     assert result.answer.sources[0].title == "Synthetic article"
-    
+
     path = tmp_path / "v0b.jsonl"
     save_v0b_run(question, result, path)
 
@@ -141,3 +141,37 @@ def test_run_v0b_connects_pipeline(monkeypatch, tmp_path):
         synthesis_result.output.model_dump(mode="json")
     )
     assert saved["answer"] == result.answer.model_dump(mode="json")
+
+@pytest.mark.parametrize(
+    "citation",
+    [
+        "[PMID: ]",
+        "[PMID: abc]",
+        "[PMID: 123",
+        "[PMID 123]",
+        "[pmid: 123]",
+    ],
+)
+def test_rejects_malformed_inline_citation(citation):
+    draft = V0BDraft(
+        question_status="well_specified",
+        evidence_status="insufficient",
+        summary=f"No relevant records were retrieved. {citation}",
+        cited_pmids=[],
+        limitations=[],
+    )
+
+    with pytest.raises(ValueError, match="Malformed inline PMID"):
+        validate_draft_citations(draft, [])
+
+
+def test_accepts_no_citations_when_no_records_were_retrieved():
+    draft = V0BDraft(
+        question_status="well_specified",
+        evidence_status="insufficient",
+        summary="No records were retrieved.",
+        cited_pmids=[],
+        limitations=[],
+    )
+
+    validate_draft_citations(draft, [])

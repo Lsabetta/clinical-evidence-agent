@@ -167,6 +167,16 @@ def validate_draft_citations(
     draft: V0BDraft,
     records: list[PubMedRecord],
 ) -> None:
+    citation_pattern = r"\[PMID:\s*([0-9]+)\]"
+
+    remaining_text = re.sub(citation_pattern, "", draft.summary)
+
+    if re.search(
+        r"\[\s*PMID\b",
+        remaining_text,
+        flags=re.IGNORECASE,
+    ):
+        raise ValueError("Malformed inline PMID citation.")
     available_pmids = {record.pmid for record in records}
     declared_pmids = set(draft.cited_pmids)
     inline_pmids = set(
